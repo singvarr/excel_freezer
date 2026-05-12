@@ -1,9 +1,9 @@
 from datetime import datetime
 from os import path
 from copy import copy
-import openpyxl
 import tkinter as tk
 from tkinter import filedialog, messagebox
+import openpyxl
 
 def freeze_excel_values():
     root = tk.Tk()
@@ -17,7 +17,7 @@ def freeze_excel_values():
     if not input_path:
         return
 
-    today = datetime.today().strptime("%d.%m.%Y")
+    today = datetime.now().strftime("%d.%m.%Y")
     file_name = path.splitext(path.basename(input_path))[0]
     default_name = f"{today}_{file_name}.xlsx"
 
@@ -55,7 +55,6 @@ def freeze_excel_values():
                         new_cell.protection = copy(cell.protection)
                         new_cell.alignment = copy(cell.alignment)
 
-        wb_data.external_links.clear()
         wb_data.save(output_path)
 
         messagebox.showinfo("Успіх", f"Готово!\nФайл збережено як:\n{output_path}")
