@@ -1,0 +1,1 @@
+pyinstaller ./excel_freezer/main.py --onefile
