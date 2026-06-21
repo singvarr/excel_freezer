@@ -1,18 +1,16 @@
 from datetime import datetime
 from os import path
 from copy import copy
-import tkinter as tk
-from tkinter import filedialog, messagebox
+
 import openpyxl
 
-def freeze_excel_values():
-    root = tk.Tk()
-    root.withdraw()
+from excel_freezer.services.dialog_manager import DialogManager
 
-    input_path = filedialog.askopenfilename(
-        title="Оберіть оригінальний Excel файл",
-        filetypes=[("Excel files", "*.xlsx")]
-    )
+
+def freeze_excel_values():
+    dialog_manager = DialogManager()
+
+    input_path = dialog_manager.request_table_to_freeze()
 
     if not input_path:
         return
@@ -21,12 +19,7 @@ def freeze_excel_values():
     file_name = path.splitext(path.basename(input_path))[0]
     default_name = f"{today}_{file_name}.xlsx"
 
-    output_path = filedialog.asksaveasfilename(
-        title="Оберіть куди зберегти копію",
-        initialfile=default_name,
-        defaultextension=".xlsx",
-        filetypes=[("Excel files", "*.xlsx")]
-    )
+    output_path = dialog_manager.request_path_for_save(default_file_name=default_name)
 
     if not output_path:
         return
@@ -57,10 +50,10 @@ def freeze_excel_values():
 
         wb_data.save(output_path)
 
-        messagebox.showinfo("Успіх", f"Готово!\nФайл збережено як:\n{output_path}")
+        dialog_manager.show_success_message(message=f"Готово!\nФайл збережено як:\n{output_path}")
+    except Exception as error:
+        dialog_manager.show_error_message(error=error)
 
-    except Exception as e:
-        messagebox.showerror("Помилка", f"Сталася помилка при обробці: {e}")
 
 if __name__ == "__main__":
     freeze_excel_values()
