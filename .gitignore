@@ -6,3 +6,5 @@ Include
 Lib
 Scripts
 main.spec
+.env
+configurations/*
