@@ -13,7 +13,7 @@ class DialogManager:
             filetypes=[("Excel files", "*.xlsx")]
         )
 
-    def request_path_for_save(self, default_file_name: str):
+    def request_save_path(self, default_file_name: str):
         return filedialog.asksaveasfilename(
             title="Оберіть куди зберегти копію",
             initialfile=default_file_name,
