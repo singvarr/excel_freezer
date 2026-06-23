@@ -5,7 +5,9 @@ from json import load
 
 from dotenv import load_dotenv
 
-from excel_freezer.models.table_configuration_processing_paths import TableProcessingPaths
+from excel_freezer.models.table_configuration_processing_paths import (
+    TableConfigurationProcessingPaths,
+)
 from excel_freezer.models.freeze_table_configuration import (
     FreezeSheetSettings,
     FreezeTableConfiguration,
@@ -39,7 +41,7 @@ class ConfigurationService:
         return result
 
     @property
-    def table_configuration_processing_paths(self) -> list[TableProcessingPaths]:
+    def table_configuration_processing_paths(self) -> list[TableConfigurationProcessingPaths]:
         configuration_str = os.environ["TABLE_CONFIGURATION_PROCESSING_PATHS"]
 
         if not configuration_str:
@@ -56,7 +58,7 @@ class ConfigurationService:
             if i % 2:
                 continue
 
-            configuration = TableProcessingPaths(
+            configuration = TableConfigurationProcessingPaths(
                 table=Path(configurations[i]),
                 settings=Path(configurations[i + 1]),
             )
@@ -92,7 +94,7 @@ class ConfigurationService:
 
         return FreezeTableConfiguration(source=source, destination=destination)
 
-    def bootstrap(self) -> list[TableProcessingPaths]:
+    def bootstrap(self) -> list[TableConfigurationProcessingPaths]:
         load_dotenv()
         self._check_required_env_variables()
 
