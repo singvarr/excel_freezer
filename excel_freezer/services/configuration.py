@@ -18,7 +18,7 @@ class ConfigurationService:
     _PATHS_SEPARATOR = ";"
     _REQUIRED_ENV_CONFIGURATION = [
         "FREEZE_TABLE_CONFIGURATIONS_DIR",
-        "TABLE_CONFIGURATION_PROCESSING_PATHS"
+        "TABLE_CONFIGURATION_PROCESSING_PATHS",
     ]
 
     def _parse_configuration_paths(self, paths_str: str) -> list[tuple[str, str]]:
@@ -78,7 +78,11 @@ class ConfigurationService:
         destination: Path,
     ) -> Optional[FreezeTableConfiguration]:
         configuration = next(
-            (config for config in self.TABLE_CONFIGURATION_PROCESSING_PATHS if config.table == source),
+            (
+                config
+                for config in self.table_configuration_processing_paths
+                if config.table == source
+            ),
             None,
         )
 
@@ -100,6 +104,5 @@ class ConfigurationService:
 
         if not os.path.isdir(os.environ["FREEZE_TABLE_CONFIGURATIONS_DIR"]):
             raise Exception("No directory with configurations exists")
-
 
         return self.table_configuration_processing_paths

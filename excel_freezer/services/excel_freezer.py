@@ -1,27 +1,62 @@
 from os import path
 from copy import copy
 from datetime import datetime
+from typing import Optional
 from pathlib import Path
 
-import openpyxl
+from openpyxl import load_workbook
+from openpyxl.cell.cell import Cell
+from openpyxl.worksheet.cell_range import CellRange
+
+from excel_freezer.models.freeze_table_configuration import (
+    FreezeSheetSettings,
+    FreezeTableConfiguration,
+)
 
 
 class ExcelFreezer:
-    def __init__(self, source: Path):
-        self._source = source
+    _DEFAULT_DATE_FORMAT = "%Y-%m-%d"
 
-    @property
-    def default_output_file_name(self) -> str:
-        today = datetime.now().strftime("%Y-%m-%d")
-        file_name = path.splitext(path.basename(self._configuration.source))[0]
+    def __init__(self, configuration: Optional[FreezeTableConfiguration]):
+        self._configuration = configuration
+
+    @staticmethod
+    def get_default_output_file_name(source: Path) -> str:
+        today = datetime.now().strftime(ExcelFreezer._DEFAULT_DATE_FORMAT)
+        file_name = path.splitext(path.basename(source))[0]
 
         return f"{today}_{file_name}.xlsx"
 
+    def _check_is_cell_formula_preserved(
+        self,
+        cell: Cell,
+        sheet_settings: Optional[FreezeSheetSettings],
+    ) -> bool:
+        if not sheet_settings:
+            return False
+
+        return any(
+            cell.coordinate in CellRange(cell_range)
+            for cell_range in sheet_settings.cells_with_preserved_formulae
+        )
+
     def run(self):
-        wb_data = openpyxl.load_workbook(self._configuration.source, data_only=True)
-        wb_styles = openpyxl.load_workbook(self._configuration.source, data_only=False)
+        wb_data = load_workbook(self._configuration.source, data_only=True)
+        wb_styles = load_workbook(self._configuration.source, data_only=False)
 
         for sheet_name in wb_styles.sheetnames:
+            sheet_settings = next(
+                (
+                    settings
+                    for settings in self._configuration.sheet_settings
+                    if settings.name == sheet_name
+                ),
+                None,
+            )
+
+            if sheet_settings and not sheet_settings.preserve_sheet:
+                continue
+
             ws_style = wb_styles[sheet_name]
             ws_data = wb_data[sheet_name]
 
@@ -32,7 +67,15 @@ class ExcelFreezer:
 
             for row in ws_style.iter_rows():
                 for cell in row:
+                    is_formula_preserved = self._check_is_cell_formula_preserved(
+                        cell=cell,
+                        sheet_settings=sheet_settings,
+                    )
+
                     new_cell = ws_data.cell(row=cell.row, column=cell.column)
+
+                    if is_formula_preserved:
+                        new_cell.value = cell.value
 
                     if cell.has_style:
                         new_cell.font = copy(cell.font)
