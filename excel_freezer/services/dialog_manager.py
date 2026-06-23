@@ -9,8 +9,7 @@ class DialogManager:
 
     def request_table_to_freeze(self):
         return filedialog.askopenfilename(
-            title="Оберіть оригінальний Excel файл",
-            filetypes=[("Excel files", "*.xlsx")]
+            title="Оберіть оригінальний Excel файл", filetypes=[("Excel files", "*.xlsx")]
         )
 
     def request_save_path(self, default_file_name: str):
@@ -18,7 +17,7 @@ class DialogManager:
             title="Оберіть куди зберегти копію",
             initialfile=default_file_name,
             defaultextension=".xlsx",
-            filetypes=[("Excel files", "*.xlsx")]
+            filetypes=[("Excel files", "*.xlsx")],
         )
 
     def show_error_message(self, error: Exception):
@@ -26,5 +25,3 @@ class DialogManager:
 
     def show_success_message(self, message: str):
         messagebox.showinfo("Успіх", message=message)
-
-
