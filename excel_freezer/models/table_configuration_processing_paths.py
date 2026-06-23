@@ -3,6 +3,6 @@ from pathlib import Path
 
 
 @dataclass
-class TableProcessingPaths:
+class TableConfigurationProcessingPaths:
     table: Path
     settings: Path
