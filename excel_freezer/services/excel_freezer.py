@@ -85,4 +85,5 @@ class ExcelFreezer:
                         new_cell.protection = copy(cell.protection)
                         new_cell.alignment = copy(cell.alignment)
 
+        wb_data._external_links = []
         wb_data.save(self._configuration.destination)
