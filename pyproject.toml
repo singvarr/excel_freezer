@@ -12,3 +12,6 @@ exclude = '''
   | Scripts
 )/
 '''
+
+[tool.mypy]
+python_version = "3.14"

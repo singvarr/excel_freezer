@@ -4,7 +4,7 @@ A python app that copies excel table and replaces formulas by calculated values.
 
 ## Motivation
 
-Imagine that you have multiple reports submitted to external customers and they rely on data calculated by formulas from internal workbooks. It allows to automate data generation and avoid errors. However, it cannot be submitted without replacement this formulas by values because your customers have no access to your workbooks.
+Imagine that you have multiple reports submitted to external customers and they rely on data calculated by formulas from internal workbooks. It allows to automate data generation and avoid errors. However, it cannot be submitted without replacement these formulas by values because your customers have no access to your workbooks.
 This app replaces formulas by values and preserves styles and dimensions of cells from original tables.
 
 ## Installation
@@ -45,5 +45,5 @@ In order to customize freezing process a configuration should be created. It's p
 ### Non-functional
 
 - [x] Add opportunity to specify table path and output folder via CLI args
-- [ ] Add mypy checks
+- [x] Add mypy checks
 - [ ] Add linting and formatting

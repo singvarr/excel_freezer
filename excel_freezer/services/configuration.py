@@ -21,25 +21,6 @@ class ConfigurationService:
         "TABLE_CONFIGURATION_PROCESSING_PATHS",
     ]
 
-    def _parse_configuration_paths(self, paths_str: str) -> list[tuple[str, str]]:
-        if not paths_str:
-            return []
-
-        paths = paths_str.split(self._PATHS_SEPARATOR)
-
-        if len(paths) % 2:
-            raise Exception("Each table should have own configuration")
-
-        result = []
-
-        for i in range(len(paths)):
-            if i % 2:
-                continue
-
-            result.append(paths[i], paths[i + 1])
-
-        return result
-
     @property
     def table_configuration_processing_paths(self) -> list[TableConfigurationProcessingPaths]:
         configuration_str = os.environ["TABLE_CONFIGURATION_PROCESSING_PATHS"]
@@ -96,7 +77,7 @@ class ConfigurationService:
                 sheet_settings=[FreezeSheetSettings(**config) for config in freeze_table_config],
             )
 
-        return FreezeTableConfiguration(source=source, destination=destination)
+        return FreezeTableConfiguration(source=source, destination=destination, sheet_settings=[])
 
     def bootstrap(self) -> list[TableConfigurationProcessingPaths]:
         load_dotenv()
