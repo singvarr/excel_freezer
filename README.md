@@ -18,7 +18,7 @@ This app replaces formulas by values and preserves styles and dimensions of cell
 
 ### Configuring the application
 
-In order to customize freezing process a configuration should be created. It's possible to preserve formulae in the specified ranges or exclude sheets with auxiliary data.
+In order to customize freezing process a configuration should be created. It's possible to preserve formulae in the specified ranges or exclude sheets with auxiliary data. Here is an example:
 
 ```json
 [
