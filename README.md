@@ -4,8 +4,6 @@ A python app that copies excel table and replaces formulas by calculated values.
 
 ## Motivation
 
-### Problem
-
 Imagine that you have multiple reports submitted to external customers and they rely on data calculated by formulas from internal workbooks. It allows to automate data generation and avoid errors. However, it cannot be submitted without replacement this formulas by values because your customers have no access to your workbooks.
 This app replaces formulas by values and preserves styles and dimensions of cells from original tables.
 
